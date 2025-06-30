@@ -1,5 +1,16 @@
 import hashlib
 import getpass
+from dotenv import load_dotenv
+import os
+
+def get_env_variable(variable_name: str) -> str:
+    """
+    Retrieves the value of an environment variable.
+    If the variable is not set, it raises a KeyError.
+    """
+    load_dotenv()  # Load environment variables from .env file
+    value = os.getenv(variable_name)
+    return value
 
 def hash_password_sha256(text: str) -> str:
     """
@@ -19,3 +30,42 @@ def get_password_hash_from_user() -> str:
     
     password_hash = hash_password_sha256(password)
     return password_hash
+
+PASSWORD_FILE_PATH = get_env_variable("PASSWORD_FILE_PATH")
+def get_old_password_hash() -> str:
+    """
+    Reads the old password hash from a file.
+    If the file does not exist, it returns an empty string and creates the file.
+    """
+    try:
+        with open(PASSWORD_FILE_PATH, "r") as file:
+            return file.read().strip()
+    except FileNotFoundError:
+        with open(PASSWORD_FILE_PATH, "w") as file:
+            file.write("")
+        return ""
+
+def save_new_password_hash(old_pasword: str, new_password_hash: str) -> None:
+    """
+    Saves the new password hash to a file.
+
+    If there is no old password, just give "" in the place of old_pasword.
+
+    THE GIVEN OLD PASSWORD SHOULD BE IN ITS NORMAL STATE.
+
+    If the old password does not match the new password hash, it does nothing, to not the user know anything.
+    """
+    try:
+        with open(PASSWORD_FILE_PATH, "r") as file:
+            old_hash = file.read().strip()
+    except FileNotFoundError:
+        with open(PASSWORD_FILE_PATH, "w") as file:
+            file.write("")
+    
+    if hash_password_sha256(old_pasword) != old_hash:
+        return
+    
+    with open(PASSWORD_FILE_PATH, "w") as file:
+        file.write(new_password_hash)
+
+    return "Password hash updated successfully."
