@@ -6,13 +6,13 @@ def run_tests():
     """
     try:
         result = subprocess.run(
-            ['python', '-m', 'unittest', 'discover', '-s', 'tests', '-p', 'test_*.py', '-v'],
+            ['python', '-m', 'unittest', 'discover', '-s', 'tests', '-p', 'test_*.py'],
             check=True,
             capture_output=True,
             text=True
         )
         print("Tests ran successfully:")
-        print(result.stdout)
+        print(result.stderr)
     except subprocess.CalledProcessError as e:
         print("An error occurred while running tests:")
         print(e.stderr)
