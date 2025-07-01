@@ -44,6 +44,10 @@ def get_old_password_hash() -> str:
         with open(PASSWORD_FILE_PATH, "w") as file:
             file.write("")
         return ""
+    
+def doesPasswordHashMatch(password_hash: str):
+    old_hash = get_old_password_hash()
+    return password_hash == old_hash
 
 def save_new_password_hash(old_pasword: str, new_password_hash: str) -> None:
     """
@@ -55,14 +59,8 @@ def save_new_password_hash(old_pasword: str, new_password_hash: str) -> None:
 
     If the old password does not match the new password hash, it does nothing, to not the user know anything.
     """
-    try:
-        with open(PASSWORD_FILE_PATH, "r") as file:
-            old_hash = file.read().strip()
-    except FileNotFoundError:
-        with open(PASSWORD_FILE_PATH, "w") as file:
-            file.write("")
     
-    if hash_password_sha256(old_pasword) != old_hash:
+    if not doesPasswordHashMatch(new_password_hash):
         return
     
     with open(PASSWORD_FILE_PATH, "w") as file:
