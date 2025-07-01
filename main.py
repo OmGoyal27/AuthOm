@@ -25,7 +25,9 @@ def get_password_from_user(prompt: str = None) -> str:
     """
     if not prompt:
         prompt = "Enter your password: "
-    password = getpass.getpass(prompt)                     # For now, we are using getpass to get the password    
+    password = getpass.getpass(prompt)                     # For now, we are using getpass to get the password
+    if not password:
+        password = ""
     password_hash = hash_password_sha256(password)
     return password_hash
 
