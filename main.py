@@ -47,7 +47,7 @@ def doesPasswordHashMatch(password_hash: str):
     old_hash = get_old_password_hash()
     return password_hash == old_hash
 
-def save_new_password_hash(old_pasword: str, new_password_hash: str) -> None:
+def update_password_hash(old_pasword: str, new_password_hash: str) -> None:
     """
     Saves the new password hash to a file.
 
