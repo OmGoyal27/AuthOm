@@ -19,15 +19,13 @@ def hash_password_sha256(text: str) -> str:
     sha256_hash = hashlib.sha256(text.encode('utf-8')).hexdigest()
     return sha256_hash
 
-def get_password_from_user() -> str:
+def get_password_from_user(prompt: str = None) -> str:
     """
     Prompts the user to enter a password and returns the hashed version it.
     """
-    password = getpass.getpass("Enter your password: ")                     # For now, we are using getpass to get the password
-    password_confirmation = getpass.getpass("Confirm your password: ")      # Later we will use a GUI input method
-    if password != password_confirmation:
-        raise ValueError("Passwords do not match.")
-    
+    if not prompt:
+        prompt = "Enter your password: "
+    password = getpass.getpass(prompt)                     # For now, we are using getpass to get the password    
     password_hash = hash_password_sha256(password)
     return password_hash
 
