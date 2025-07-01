@@ -19,7 +19,7 @@ def hash_password_sha256(text: str) -> str:
     sha256_hash = hashlib.sha256(text.encode('utf-8')).hexdigest()
     return sha256_hash
 
-def get_password_from_user(prompt: str = None) -> str:
+def get_password_hash_from_user(prompt: str = None) -> str:
     """
     Prompts the user to enter a password and returns the hashed version it.
     """
@@ -42,12 +42,14 @@ def get_old_password_hash() -> str:
             return file.read().strip()
     except FileNotFoundError:
         with open(PASSWORD_FILE_PATH, "w") as file:
-            file.write("")
-        return ""
+            file.write("e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855")
+        return "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     
 def doesPasswordHashMatch(password_hash: str):
     old_hash = get_old_password_hash()
-    return password_hash == old_hash
+    if password_hash == old_hash:
+        return True
+    return False
 
 def update_password_hash(old_pasword: str, new_password_hash: str) -> None:
     """
@@ -60,7 +62,7 @@ def update_password_hash(old_pasword: str, new_password_hash: str) -> None:
     If the old password does not match the new password hash, it does nothing, to not the user know anything.
     """
     
-    if not doesPasswordHashMatch(new_password_hash):
+    if not doesPasswordHashMatch(old_pasword):
         return
     
     with open(PASSWORD_FILE_PATH, "w") as file:
