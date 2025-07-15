@@ -1,28 +1,128 @@
-# AuthOm
+# AuthOm - Flask Password Management System
 
-A simple password authentication system that uses SHA-256 hashing to securely store and verify passwords.
+A secure web-based password management system built with Flask that provides both web interface and JSON API endpoints for password operations.
 
 ## Features
 
-- **Secure Password Hashing**: Uses SHA-256 algorithm to hash passwords
-- **Password Change Functionality**: Allows users to securely change their passwords
-- **Environment Configuration**: Uses environment variables for configuration
-- **File-based Storage**: Stores hashed passwords in a local file
-- **Comprehensive Testing**: Includes unit tests for password hashing functionality
+- 🔐 **Secure Password Hashing**: Uses SHA-256 for password hashing
+- 🌐 **Web Interface**: Beautiful, responsive web interface built with Bootstrap
+- 🔄 **Password Change**: Change your password with old password verification
+- ✅ **Password Verification**: Verify if your current password is correct
+- 🚀 **JSON API**: RESTful API endpoints for programmatic access
+- 📱 **Mobile Responsive**: Works seamlessly on desktop and mobile devices
+## Quick Start
 
-## Project Structure
+### 1. Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 2. Set Up Environment
+
+Copy the example environment file and configure it:
+
+```bash
+cp example.env .env
+```
+
+Edit `.env` if needed (default configuration should work fine).
+
+### 3. Run the Flask Application
+
+```bash
+python flask_app.py
+```
+
+The application will be available at `http://localhost:5000`
+
+## Web Interface
+
+### Home Page
+- Access the main dashboard at `http://localhost:5000`
+- Choose between changing password or verifying password
+
+### Change Password
+- Navigate to `http://localhost:5000/change_password`
+- Enter your current password
+- Set a new password
+- Confirm the new password
+
+### Verify Password
+- Navigate to `http://localhost:5000/verify_password`
+- Enter your password to verify if it's correct
+
+## API Endpoints
+
+### Change Password
+```bash
+POST /api/change_password
+Content-Type: application/json
+
+{
+    "old_password": "your_current_password",
+    "new_password": "your_new_password"
+}
+```
+
+**Response:**
+```json
+{
+    "success": true,
+    "message": "Password changed successfully"
+}
+```
+
+### Verify Password
+```bash
+POST /api/verify_password
+Content-Type: application/json
+
+{
+    "password": "your_password"
+}
+```
+
+**Response:**
+```json
+{
+    "success": true,
+    "message": "Password verification successful"
+}
+```
+
+## Command Line Interface (Legacy)
+
+You can still use the original command-line interfaces:
+
+### Change Password (CLI)
+```bash
+python app.py
+```
+
+### Run Tests
+```bash
+python tests.py
+```
+
+## File Structure
 
 ```
 AuthOm/
-├── app.py                 # Main application for password change workflow
-├── main.py               # Core authentication functions
-├── tests.py              # Test runner script
-├── .env                  # Environment variables (not tracked)
-├── example.env           # Example environment configuration
-├── data/
-│   └── hashed_passwords.txt  # Stored password hashes (not tracked)
-└── tests/
-    └── test_main.py      # Unit tests for authentication functions
+├── flask_app.py           # Main Flask application
+├── main.py               # Core password management functions
+├── app.py                # Legacy CLI application
+├── templates/            # HTML templates
+│   ├── base.html         # Base template with common layout
+│   ├── index.html        # Home page
+│   ├── change_password.html
+│   └── verify_password.html
+├── data/                 # Data storage
+│   └── hashed_passwords.txt
+├── tests/                # Test files
+├── requirements.txt      # Python dependencies
+├── .env                  # Environment configuration
+└── README.md
 ```
 
 ## Setup
@@ -103,6 +203,77 @@ This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.t
 ## Author
 
 Om Goyal
+
+## Security Features
+
+- **SHA-256 Hashing**: All passwords are hashed using SHA-256 before storage
+- **No Plain Text Storage**: Passwords are never stored in plain text
+- **Environment Configuration**: Sensitive paths configurable via environment variables
+- **Input Validation**: Both client-side and server-side validation
+- **Secure Sessions**: Flask sessions for web interface security
+
+## Configuration
+
+Environment variables (set in `.env` file):
+
+- `PASSWORD_FILE_PATH`: Path to the file where hashed passwords are stored (default: `data/hashed_passwords.txt`)
+
+## API Usage Examples
+
+### Using cURL
+
+**Change Password:**
+```bash
+curl -X POST http://localhost:5000/api/change_password \
+  -H "Content-Type: application/json" \
+  -d '{"old_password": "oldpass", "new_password": "newpass"}'
+```
+
+**Verify Password:**
+```bash
+curl -X POST http://localhost:5000/api/verify_password \
+  -H "Content-Type: application/json" \
+  -d '{"password": "yourpassword"}'
+```
+
+### Using Python requests
+
+```python
+import requests
+
+# Change password
+response = requests.post('http://localhost:5000/api/change_password', 
+                        json={'old_password': 'oldpass', 'new_password': 'newpass'})
+print(response.json())
+
+# Verify password
+response = requests.post('http://localhost:5000/api/verify_password', 
+                        json={'password': 'yourpassword'})
+print(response.json())
+```
+
+## Development
+
+### Running in Development Mode
+
+The Flask app runs in debug mode by default when executed directly:
+
+```bash
+python flask_app.py
+```
+
+### Production Deployment
+
+For production deployment:
+
+1. Set a secure secret key in `flask_app.py`
+2. Set `debug=False`
+3. Use a production WSGI server like Gunicorn:
+
+```bash
+pip install gunicorn
+gunicorn -w 4 -b 0.0.0.0:5000 flask_app:app
+```
 
 ## Contributing
 
