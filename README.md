@@ -31,7 +31,7 @@ Edit `.env` if needed (default configuration should work fine).
 ### 3. Run the Flask Application
 
 ```bash
-python flask_app.py
+python app.py
 ```
 
 The application will be available at `http://localhost:5000`
@@ -91,14 +91,7 @@ Content-Type: application/json
 }
 ```
 
-## Command Line Interface (Legacy)
-
-You can still use the original command-line interfaces:
-
-### Change Password (CLI)
-```bash
-python app.py
-```
+## Command Line Interface
 
 ### Run Tests
 ```bash
@@ -109,9 +102,8 @@ python tests.py
 
 ```
 AuthOm/
-├── flask_app.py           # Main Flask application
+├── app.py           # Main Flask application
 ├── main.py               # Core password management functions
-├── app.py                # Legacy CLI application
 ├── templates/            # HTML templates
 │   ├── base.html         # Base template with common layout
 │   ├── index.html        # Home page
