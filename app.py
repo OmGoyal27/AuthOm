@@ -54,24 +54,6 @@ def change_password():
     
     return render_template('change_password.html')
 
-@app.route('/verify_password', methods=['GET', 'POST'])
-def verify_password():
-    """Route to verify current password"""
-    if request.method == 'POST':
-        password = request.form.get('password')
-        
-        if not password:
-            flash('Password is required.', 'error')
-            return render_template('verify_password.html')
-        
-        password_hash = hash_password_sha256(password)
-        if doesPasswordHashMatch(password_hash):
-            flash('Password verification successful!', 'success')
-        else:
-            flash('Password verification failed.', 'error')
-    
-    return render_template('verify_password.html')
-
 @app.route('/api/change_password', methods=['POST'])
 def api_change_password():
     """API endpoint for changing password (JSON)"""
