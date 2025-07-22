@@ -103,17 +103,16 @@ python tests.py
 ```
 AuthOm/
 ├── app.py           # Main Flask application
-├── main.py               # Core password management functions
+├── main.py
 ├── templates/            # HTML templates
-│   ├── base.html         # Base template with common layout
-│   ├── index.html        # Home page
+│   ├── base.html
+│   ├── index.html
 │   ├── change_password.html
 │   └── verify_password.html
 ├── data/                 # Data storage
-│   └── hashed_passwords.txt
 ├── tests/                # Test files
 ├── requirements.txt      # Python dependencies
-├── .env                  # Environment configuration
+├── .env
 └── README.md
 ```
 
